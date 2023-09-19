@@ -1,0 +1,189 @@
+C51 COMPILER V9.60.0.0   RF                                                                01/27/2022 18:43:15 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE RF
+OBJECT MODULE PLACED IN .\Objects\rf.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE ..\New folder\rf.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\L
+                    -istings\rf.lst) TABS(2) OBJECT(.\Objects\rf.obj)
+
+line level    source
+
+   1          
+   2          //CODE of lcd interfacing with 8051 microcontroller
+   3          #include<reg51.h>
+   4          #include<string.h>
+   5          void delay(unsigned int i);
+   6          void lcd_cmd(unsigned char a);
+   7          void lcd_data(unsigned char b);
+   8          void lcd_init(void);
+   9          void lcd_str(unsigned char *str);
+  10          void sendser_char(unsigned char b);
+  11          void sendser_str(unsigned char *str);
+  12          sbit rs=P2^0;
+  13          sbit en=P2^1;
+  14          unsigned int i;
+  15          unsigned char a[100];
+  16          sfr ldata=0x90;//port1 
+  17          void clear(void);
+  18          void main()
+  19          
+  20          {
+  21   1      
+  22   1        TMOD=0x20;//timer1 mode2 -auto reload mode
+  23   1        TH1=0xfd;//9600 baud rate
+  24   1        SCON=0x50;//8bit data ,1start bit,1stop bit
+  25   1        TR1=1;
+  26   1      lcd_init();
+  27   1        lcd_str("   WELCOME TO   ");
+  28   1        lcd_cmd(0xc0);
+  29   1        lcd_str("   MY PROJECT   ");
+  30   1        
+  31   1        delay(65000);
+  32   1          lcd_cmd(0x01);
+  33   1          lcd_cmd(0x80);
+  34   1      lcd_str("   YT TRAINING   ");
+  35   1        lcd_cmd(0xc0);
+  36   1        lcd_str("   INSTITUTE   ");
+  37   1        delay(65000);
+  38   1        while(1)
+  39   1      
+  40   1      {
+  41   2            lcd_cmd(0x01);
+  42   2          lcd_cmd(0x80);
+  43   2      lcd_str("   Waiting For    ");
+  44   2        lcd_cmd(0xc0);
+  45   2        lcd_str("   RFID Tag   ");
+  46   2        for(i=0;i<10;i++)
+  47   2        {
+  48   3        while(RI==0);//suc 1 char recived 
+  49   3          RI=0;
+  50   3          a[i]=SBUF;//a[0]='1',a[1]='0'
+  51   3        
+  52   3        
+  53   3        }
+  54   2        a[10]='\0';
+C51 COMPILER V9.60.0.0   RF                                                                01/27/2022 18:43:15 PAGE 2   
+
+  55   2        if(0==strcmp("10003B0CA7",a))
+  56   2        {
+  57   3              lcd_cmd(0x01);
+  58   3          lcd_cmd(0x80);
+  59   3          lcd_str(" WELCOME USER 1");
+  60   3        lcd_cmd(0xc0);
+  61   3        lcd_str(a);
+  62   3          delay(65000);
+  63   3          clear();
+  64   3        }
+  65   2          else if(0==strcmp("10003B0CAE",a))
+  66   2        {
+  67   3              lcd_cmd(0x01);
+  68   3          lcd_cmd(0x80);
+  69   3          lcd_str(" WELCOME USER 2");
+  70   3        lcd_cmd(0xc0);
+  71   3        lcd_str(a);
+  72   3          delay(65000);
+  73   3              clear();
+  74   3        }
+  75   2        else
+  76   2        {
+  77   3                lcd_cmd(0x01);
+  78   3          lcd_cmd(0x80);
+  79   3          lcd_str(" INVALID TAG");
+  80   3        lcd_cmd(0xc0);
+  81   3        lcd_str(a);
+  82   3          delay(65000);
+  83   3            clear();
+  84   3        }
+  85   2      
+  86   2      }
+  87   1      
+  88   1      }
+  89          
+  90          void lcd_init()
+  91          {
+  92   1      lcd_cmd(0x38);
+  93   1        lcd_cmd(0x0c);
+  94   1        lcd_cmd(0x01);
+  95   1        lcd_cmd(0x80);
+  96   1      
+  97   1      
+  98   1      }
+  99          void delay(unsigned int i)
+ 100          {
+ 101   1      unsigned int j;
+ 102   1        for(j=0;j<i;j++);
+ 103   1      }
+ 104          
+ 105          void lcd_cmd(unsigned char a)
+ 106          {
+ 107   1        rs=0;//cmd 
+ 108   1        ldata=a;
+ 109   1        en=1;
+ 110   1        delay(5);
+ 111   1        en=0;
+ 112   1        delay(5);
+ 113   1      }
+ 114          void lcd_data(unsigned char b)
+ 115          {
+ 116   1        rs=1;//data 
+C51 COMPILER V9.60.0.0   RF                                                                01/27/2022 18:43:15 PAGE 3   
+
+ 117   1        ldata=b;
+ 118   1        en=1;
+ 119   1        delay(5);
+ 120   1        en=0;
+ 121   1        delay(5);
+ 122   1      }
+ 123          void lcd_str(unsigned char *str)
+ 124          {
+ 125   1      while(*str)
+ 126   1      {
+ 127   2        lcd_data(*str++);
+ 128   2      }
+ 129   1      
+ 130   1      }
+ 131          
+ 132          
+ 133          void sendser_char(unsigned char b)
+ 134          {
+ 135   1      SBUF=b;
+ 136   1        while(TI==0);
+ 137   1        TI=0;
+ 138   1      }
+ 139          
+ 140          
+ 141          void sendser_str(unsigned char *str)
+ 142          {
+ 143   1      while(*str)
+ 144   1      {
+ 145   2        sendser_char(*str++);
+ 146   2      }
+ 147   1      
+ 148   1      }
+ 149          void clear(void)
+ 150          {
+ 151   1      
+ 152   1      unsigned int i;
+ 153   1        for(i=0;i<100;i++)
+ 154   1        {
+ 155   2        a[i]='\0';
+ 156   2        
+ 157   2        }
+ 158   1      }
+ 159            
+ 160            
+ 161            
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    454    ----
+   CONSTANT SIZE    =    169    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =    102       6
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,536 @@
+C51 COMPILER V9.60.0.0   FULLC                                                             05/17/2022 22:35:39 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE FULLC
+OBJECT MODULE PLACED IN .\Objects\fullC.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE fullC.c OMF2 OPTIMIZE(8,SPEED) BROWSE DEBUG PRINT(.\Listings\fullC.lst) 
+                    -TABS(2) OBJECT(.\Objects\fullC.obj)
+
+line level    source
+
+   1          //CODE of lcd interfacing with 8051 microcontroller
+   2          #include<reg51.h>
+   3          #include<string.h>
+   4          void delay(unsigned int i);
+   5          void lcd_cmd(unsigned char a);
+   6          void lcd_data(unsigned char b);
+   7          void lcd_init(void);
+   8          void lcd_str(unsigned char *str);
+   9          void sendser_char(unsigned char b);
+  10          void sendser_str(unsigned char *str);
+  11          void sms_send(void);
+  12          void delay_ms(unsigned int i);
+  13          void clear(void);
+  14          void gsm_link(void);
+  15          
+  16          void keypad();
+  17          sbit re=P2^0;   //gsm receive
+  18          sbit tr=P2^1;   //gsm transmitter
+  19          sbit rs=P3^2;
+  20          sbit en=P3^3;
+  21          sbit m11=P3^4;
+  22          sbit m12=P3^5;
+  23          sfr ldata=0x90;//port1 
+  24          sbit r1=P2^0;
+  25          sbit r2=P2^1;
+  26          sbit r3=P2^2;
+  27          sbit r4=P2^3;
+  28          sbit c1=P2^4;
+  29          sbit c2=P2^5;
+  30          sbit c3=P2^6;
+  31          
+  32          unsigned char a[60],mesg_rec,pwd[5],ps,pas[5];
+  33          unsigned int i=0,atempt=0,iJ=0,s=0;
+  34          unsigned int j,trigg,testing;
+  35          void ser_int() interrupt 4
+  36          {
+  37   1      if(RI==1)
+  38   1      {
+  39   2      
+  40   2      a[i]=SBUF;
+  41   2      i++;
+  42   2      RI=0;
+  43   2      if (strlen(a)==52){
+  44   3      mesg_rec=1;
+  45   3      }
+  46   2      }
+  47   1      
+  48   1      if(TI==1)
+  49   1      {
+  50   2      
+  51   2      TI=0;
+  52   2      }
+  53   1      
+  54   1      
+C51 COMPILER V9.60.0.0   FULLC                                                             05/17/2022 22:35:39 PAGE 2   
+
+  55   1      }
+  56          void main()
+  57          
+  58          {
+  59   1      
+  60   1        m11=0;
+  61   1        m12=0;
+  62   1        TMOD=0x20;//timer1 mode2 -auto reload mode
+  63   1        TH1=0xfd;//9600 baud rate
+  64   1        SCON=0x50;//8bit data ,1start bit,1stop bit
+  65   1        IE=0x90;//EA=1,ES=1...
+  66   1        TR1=1;
+  67   1        trigg=0;
+  68   1        
+  69   1        lcd_init();
+  70   1        lcd_str("   WELCOME TO   ");
+  71   1        lcd_cmd(0xc0);
+  72   1        lcd_str("   OUR PROJECT   ");
+  73   1        delay(65000);
+  74   1        lcd_cmd(0x01);
+  75   1        lcd_cmd(0x80);
+  76   1        lcd_str("   BANK LOCKER    ");
+  77   1        lcd_cmd(0xc0);
+  78   1        lcd_str("   SECURITY SYSTEM   ");
+  79   1        delay(65000);
+  80   1        gsm_link();
+  81   1        testing=1;
+  82   1        while(testing==1)
+  83   1      { 
+  84   2        testing=0;
+  85   2        
+  86   2        lcd_cmd(0x01);
+  87   2        lcd_cmd(0x80);
+  88   2        lcd_str("   Waiting For    ");
+  89   2        lcd_cmd(0xc0);
+  90   2        lcd_str("   RFID Tag   ");
+  91   2        
+  92   2        for(iJ=0;iJ<10;iJ++)
+  93   2        {
+  94   3          while(RI==0);
+  95   3          RI=0;//suc 1char recived 
+  96   3          delay(1000);
+  97   3          a[iJ]=SBUF;//a[0]='1',a[1]='0'
+  98   3          
+  99   3        }
+ 100   2        lcd_cmd(0x01);
+ 101   2        lcd_cmd(0x80);
+ 102   2        lcd_str("   reading done    ");
+ 103   2        delay(65000);
+ 104   2        a[10]='\0';
+ 105   2        mesg_rec=0;
+ 106   2        if(0==strcmp("10003B0CA7",a))
+ 107   2        {
+ 108   3          lcd_cmd(0x01);
+ 109   3          lcd_cmd(0x80);
+ 110   3          lcd_str(" WELCOME USER 1");
+ 111   3          trigg=1;
+ 112   3          lcd_cmd(0xc0);
+ 113   3          lcd_str(a);
+ 114   3          delay(65000);
+ 115   3          clear();
+ 116   3        }
+C51 COMPILER V9.60.0.0   FULLC                                                             05/17/2022 22:35:39 PAGE 3   
+
+ 117   2        else if(0==strcmp("10003B0CAE",a))
+ 118   2        {
+ 119   3          lcd_cmd(0x01);
+ 120   3          lcd_cmd(0x80);
+ 121   3          lcd_str(" WELCOME USER 2");
+ 122   3          trigg=1;
+ 123   3          lcd_cmd(0xc0);
+ 124   3          lcd_str(a);
+ 125   3          delay(65000);
+ 126   3              clear();
+ 127   3        }
+ 128   2        else
+ 129   2        {
+ 130   3          lcd_cmd(0x01);
+ 131   3          lcd_cmd(0x80);
+ 132   3          lcd_str(" USER NOT FOUND ");
+ 133   3          lcd_cmd(0xc0);
+ 134   3          lcd_str(a);
+ 135   3          delay(65000);
+ 136   3          clear();
+ 137   3        }
+ 138   2      
+ 139   2        if (trigg==1)
+ 140   2        {
+ 141   3          clear(); //edited
+ 142   3          sms_send();
+ 143   3          delay(100);
+ 144   3          i=0;
+ 145   3        lcd_cmd(0x01);
+ 146   3        lcd_cmd(0x80);
+ 147   3        lcd_str(" RECIEVING    ");
+ 148   3          lcd_cmd(0xc0);
+ 149   3        lcd_str("   PASSWORD   ");
+ 150   3          while(RI==0);
+ 151   3          
+ 152   3            delay(65000);
+ 153   3          if(mesg_rec==1)
+ 154   3        {
+ 155   4          //+CMT
+ 156   4          lcd_cmd(0x01);
+ 157   4          lcd_cmd(0x80);
+ 158   4          lcd_str("   PASSWORD   ");
+ 159   4          lcd_cmd(0xc0);
+ 160   4          lcd_str("   RECIEVED   ");
+ 161   4          delay(65000);
+ 162   4          
+ 163   4          if(a[2]=='+'&&a[3]=='C'&&a[4]=='M'&&a[5]=='T')  //ok+CMTuewhekjhjfwkfjfghtredfghjuytghjhgfdghjygdfK1234
+ 164   4          {
+ 165   5            
+ 166   5          j=0;
+ 167   5          for(i =49 ; i<53;i++)
+ 168   5          {
+ 169   6            
+ 170   6            pas[j]=a[i];
+ 171   6            j++;
+ 172   6          }
+ 173   5          pas[4]='\0';
+ 174   5          }
+ 175   4        }
+ 176   3        while (atempt<3){
+ 177   4        lcd_cmd(0x01);
+ 178   4        lcd_cmd(0x80);
+C51 COMPILER V9.60.0.0   FULLC                                                             05/17/2022 22:35:39 PAGE 4   
+
+ 179   4        lcd_str(" ENTER PASSWORD   ");
+ 180   4        lcd_cmd(0xc0);
+ 181   4        for(ps=0;ps<5;ps++)
+ 182   4        {
+ 183   5        pwd[ps]='\0';
+ 184   5      
+ 185   5        }
+ 186   4        ps=0;
+ 187   4        while(ps<4)//"1234\0"
+ 188   4        {
+ 189   5        keypad();
+ 190   5        
+ 191   5        }
+ 192   4        /*pwd[0]='1';
+ 193   4        pwd[1]='2';
+ 194   4        pwd[2]='3';
+ 195   4        pwd[3]='4';
+ 196   4        pwd[4]='\0';*/
+ 197   4        if(0==strcmp(pwd,pas))
+ 198   4          {
+ 199   5          
+ 200   5          delay(65000);
+ 201   5          lcd_cmd(0x01);
+ 202   5          lcd_cmd(0x80);
+ 203   5          lcd_str("ENTERED PASSWORD");
+ 204   5          lcd_cmd(0xc0);
+ 205   5          lcd_str("   IS CORRECT   ");
+ 206   5          delay(65000);delay(65000);
+ 207   5            //delay_ms(500);
+ 208   5          lcd_cmd(0x01);
+ 209   5          lcd_cmd(0x80);
+ 210   5          lcd_str("   LOCKER IS    ");
+ 211   5          lcd_cmd(0xc0);
+ 212   5          lcd_str("    OPENING     ");
+ 213   5          m11=1;
+ 214   5          m12=0;
+ 215   5          delay(65000);delay(65000);
+ 216   5          //delay_ms(500);
+ 217   5          lcd_cmd(0x01);
+ 218   5          lcd_cmd(0x80);
+ 219   5          lcd_str(" LOCKER OPENED  ");
+ 220   5          lcd_cmd(0xc0);
+ 221   5          lcd_str("                ");
+ 222   5          s=1;
+ 223   5          sms_send();
+ 224   5          
+ 225   5          m11=0;
+ 226   5          m12=0;
+ 227   5          //delay(65000);delay(65000);
+ 228   5          delay_ms(500);
+ 229   5          lcd_cmd(0x01);
+ 230   5          lcd_cmd(0x80);
+ 231   5          lcd_str(" LOCKER CLOSING ");
+ 232   5          lcd_cmd(0xc0);
+ 233   5          lcd_str("                ");
+ 234   5          m11=0;
+ 235   5          m12=1;
+ 236   5          delay_ms(1000);     
+ 237   5          lcd_cmd(0x80);
+ 238   5          lcd_str(" LOCKER CLOSED  ");
+ 239   5          lcd_cmd(0xc0);
+ 240   5          lcd_str("                ");
+C51 COMPILER V9.60.0.0   FULLC                                                             05/17/2022 22:35:39 PAGE 5   
+
+ 241   5          m11=0;
+ 242   5          m12=0;
+ 243   5          //delay(65000);delay(65000);
+ 244   5          delay_ms(500);
+ 245   5          break;
+ 246   5          }
+ 247   4          else
+ 248   4          {
+ 249   5              
+ 250   5          lcd_cmd(0x01);
+ 251   5          lcd_cmd(0x80);
+ 252   5          lcd_str("ENTERED PASSWORD");
+ 253   5          lcd_cmd(0xc0);
+ 254   5          lcd_str(" IS INCORRECT   ");
+ 255   5            lcd_cmd(0xc0);
+ 256   5            lcd_str(pas);
+ 257   5          //delay(65000);delay(65000);
+ 258   5            delay_ms(500);
+ 259   5          atempt+=1;
+ 260   5          }
+ 261   4          if (atempt==3){
+ 262   5            lcd_cmd(0x01);
+ 263   5            lcd_cmd(0x80);
+ 264   5            lcd_str("multiple invalid");
+ 265   5            lcd_cmd(0xc0);
+ 266   5            lcd_str(" login attempts ");
+ 267   5            sms_send();
+ 268   5            
+ 269   5        }
+ 270   4      }
+ 271   3        
+ 272   3        }
+ 273   2      }
+ 274   1      }
+ 275          
+ 276          void keypad(void)
+ 277          {
+ 278   1      
+ 279   1          delay(65000);
+ 280   1          c1=c2=c3=1;
+ 281   1          r1=r2=r3=r4=0;
+ 282   1          if(c1==0)//c1 is pressed 
+ 283   1          {
+ 284   2            r1=r2=r3=r4=1;
+ 285   2            c1=c2=c3=0;
+ 286   2            if(r1==0)//r1 is pressed 
+ 287   2            {
+ 288   3            lcd_data('1');pwd[ps]='1';ps++; //pwd[0]='1',pwd[1]='2',pwd[2]='3',pwd[3]='4'
+ 289   3            }
+ 290   2            if(r2==0)//r2 is pressed 
+ 291   2            {
+ 292   3            lcd_data('4');pwd[ps]='4';ps++;
+ 293   3            }
+ 294   2            if(r3==0)//r1 is pressed 
+ 295   2            {
+ 296   3            lcd_data('7');pwd[ps]='7';ps++; 
+ 297   3              }
+ 298   2            if(r4==0)//r2 is pressed 
+ 299   2            {
+ 300   3            lcd_data('*');pwd[ps]='*';ps++; 
+ 301   3            }
+ 302   2          }
+C51 COMPILER V9.60.0.0   FULLC                                                             05/17/2022 22:35:39 PAGE 6   
+
+ 303   1              else if(c2==0)//c1 is pressed 
+ 304   1          {
+ 305   2            r1=r2=r3=r4=1;
+ 306   2            c1=c2=c3=0;
+ 307   2            if(r1==0)//r1 is pressed 
+ 308   2            {
+ 309   3            lcd_data('2');pwd[ps]='2';ps++; 
+ 310   3            }
+ 311   2            if(r2==0)//r2 is pressed 
+ 312   2            {
+ 313   3            lcd_data('5');pwd[ps]='5';ps++; 
+ 314   3            }
+ 315   2            if(r3==0)//r1 is pressed 
+ 316   2            {
+ 317   3            lcd_data('8');pwd[ps]='8';ps++; 
+ 318   3            }
+ 319   2            if(r4==0)//r2 is pressed 
+ 320   2            {
+ 321   3            lcd_data('0');pwd[ps]='0';ps++;
+ 322   3            }       
+ 323   2          }
+ 324   1          
+ 325   1              else if(c3==0)//c1 is pressed 
+ 326   1          {
+ 327   2            r1=r2=r3=r4=1;
+ 328   2            c1=c2=c3=0;
+ 329   2            if(r1==0)//r1 is pressed 
+ 330   2            {
+ 331   3            lcd_data('3');pwd[ps]='3';ps++;
+ 332   3            }       
+ 333   2            if(r2==0)//r2 is pressed 
+ 334   2            {
+ 335   3            lcd_data('6');pwd[ps]='6';ps++; 
+ 336   3            }
+ 337   2            if(r3==0)//r1 is pressed 
+ 338   2            {
+ 339   3            lcd_data('9');pwd[ps]='9';ps++;
+ 340   3            }
+ 341   2            if(r4==0)//r2 is pressed 
+ 342   2            {
+ 343   3            lcd_data('#');pwd[ps]='#';ps++; 
+ 344   3            }
+ 345   2          }
+ 346   1      
+ 347   1      }
+ 348          void sms_send(void)
+ 349          {
+ 350   1        lcd_cmd(0x01);
+ 351   1        lcd_cmd(0x80);
+ 352   1        lcd_str(" SMS SENDING");
+ 353   1        delay_ms(650);
+ 354   1        sendser_str("AT+CMGS=");
+ 355   1        sendser_char(0x22);//"
+ 356   1        sendser_str("+919999999999");
+ 357   1        sendser_char(0x22);//"
+ 358   1        sendser_char(0x0d);
+ 359   1        if(s==1)
+ 360   1        {
+ 361   2        sendser_str("BANK LOCKER IS OPENED SUCCESSFULLY");
+ 362   2        }
+ 363   1        if (atempt==3){
+ 364   2        sendser_str("YOUR LOCKER HAD MULTIPLE ACCESS ATEMPTS");
+C51 COMPILER V9.60.0.0   FULLC                                                             05/17/2022 22:35:39 PAGE 7   
+
+ 365   2        }
+ 366   1        sendser_char(0x1a);//sms sent
+ 367   1        lcd_cmd(0x01);
+ 368   1        lcd_cmd(0x80);
+ 369   1        lcd_str(" SMS SENT");
+ 370   1        delay_ms(650);
+ 371   1      }
+ 372          void gsm_link(void)
+ 373          {
+ 374   1        loop:
+ 375   1        i=0;
+ 376   1        sendser_str("AT");
+ 377   1        sendser_char(0x0d);
+ 378   1        lcd_cmd(0x01);
+ 379   1        lcd_cmd(0x80);
+ 380   1        lcd_str(a);
+ 381   1        sendser_str(a);
+ 382   1        delay_ms(100);
+ 383   1        if(a[0]=='O'&& a[1]=='K')
+ 384   1        {
+ 385   2          lcd_cmd(0x01);
+ 386   2        lcd_cmd(0x80);
+ 387   2        lcd_str(" GSM LINK IS UP ");
+ 388   2        }
+ 389   1        else
+ 390   1        {
+ 391   2          lcd_str("  GSM CHECKING  ");
+ 392   2          goto loop;
+ 393   2        }
+ 394   1        clear();
+ 395   1        delay_ms(200);
+ 396   1        
+ 397   1        loop1:
+ 398   1        i=0;
+ 399   1        sendser_str("AT+CMGF=1");
+ 400   1        sendser_char(0x0d);
+ 401   1        lcd_cmd(0x01);
+ 402   1        lcd_cmd(0x80);
+ 403   1        delay_ms(100);
+ 404   1        if(a[0]=='O'&&a[1]=='K')
+ 405   1        {
+ 406   2        lcd_str("  GSM TEXT MODE ");
+ 407   2        
+ 408   2        }
+ 409   1        else
+ 410   1        {
+ 411   2          lcd_str("GSM NOT IN TEXT ");
+ 412   2        goto loop1;
+ 413   2        }
+ 414   1           clear();
+ 415   1      delay_ms(650);
+ 416   1      
+ 417   1      }
+ 418          
+ 419          void lcd_init()
+ 420          {
+ 421   1        lcd_cmd(0x38);
+ 422   1        lcd_cmd(0x0C);
+ 423   1        lcd_cmd(0x01);
+ 424   1        lcd_cmd(0x80);
+ 425   1      
+ 426   1      
+C51 COMPILER V9.60.0.0   FULLC                                                             05/17/2022 22:35:39 PAGE 8   
+
+ 427   1      }
+ 428          void delay(unsigned int i)
+ 429          {
+ 430   1      unsigned int j;
+ 431   1        for(j=0;j<i;j++);
+ 432   1      }
+ 433          void delay_ms(unsigned int i)
+ 434          {
+ 435   1      unsigned int j,k;
+ 436   1        for(j=0;j<i;j++)
+ 437   1        for(k=0;k<1275;k++);
+ 438   1      }
+ 439          
+ 440          void lcd_cmd(unsigned char a)
+ 441          {
+ 442   1        rs=0;//cmd 
+ 443   1        ldata=a;
+ 444   1        en=1;
+ 445   1        delay(5);
+ 446   1        en=0;
+ 447   1        delay(5);
+ 448   1      }
+ 449          void lcd_data(unsigned char b)
+ 450          {
+ 451   1        rs=1; 
+ 452   1        ldata=b;
+ 453   1        en=1;
+ 454   1        delay(5);
+ 455   1        en=0;
+ 456   1        delay(5);
+ 457   1      }
+ 458          void lcd_str(unsigned char *str)
+ 459          {
+ 460   1      while(*str)
+ 461   1      {
+ 462   2        lcd_data(*str++);
+ 463   2      }
+ 464   1      
+ 465   1      }
+ 466          
+ 467          
+ 468          void sendser_char(unsigned char b)
+ 469          {
+ 470   1      SBUF=b;
+ 471   1        while(TI==0);
+ 472   1        TI=0;
+ 473   1      }
+ 474          
+ 475          
+ 476          void sendser_str(unsigned char *str)
+ 477          {
+ 478   1      while(*str)
+ 479   1      {
+ 480   2        sendser_char(*str++);
+ 481   2      }
+ 482   1      
+ 483   1      }
+ 484          void clear(void)
+ 485          {
+ 486   1      unsigned int i;
+ 487   1        for(i=0;i<60;i++)
+ 488   1        {
+C51 COMPILER V9.60.0.0   FULLC                                                             05/17/2022 22:35:39 PAGE 9   
+
+ 489   2        a[i]=0;
+ 490   2        
+ 491   2        }
+ 492   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1839    ----
+   CONSTANT SIZE    =    654    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     86       6
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+   EDATA SIZE       =   ----    ----
+   HDATA SIZE       =   ----    ----
+   XDATA CONST SIZE =   ----    ----
+   FAR CONST SIZE   =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

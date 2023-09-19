@@ -1,0 +1,4 @@
+".\Objects\gss.obj",
+".\Objects\rfid.obj" 
+TO ".\Objects\gss" 
+PRINT(".\Listings\gss.m51")

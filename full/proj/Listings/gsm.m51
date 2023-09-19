@@ -1,0 +1,399 @@
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    01/26/2022  13:57:24  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
+C:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\gsm.obj, .\Objects\gss2.obj TO .\Objects\gsm PRINT (.\Listings\gsm.m51)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\gsm.obj (GSM)
+  .\Objects\gss2.obj (GSS2)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C_STARTUP)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C?CLDPTR)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C?CLDOPTR)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C?SLCMP)
+
+
+LINK MAP OF MODULE:  .\Objects\gsm (GSM)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     001CH     UNIT         ?DT?GSS2
+            DATA    0024H     0009H     UNIT         _DATA_GROUP_
+            DATA    002DH     0005H     UNIT         ?DT?_LCD_STRING?GSS2
+            DATA    0032H     0002H     UNIT         ?DT?GSM
+            IDATA   0034H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0081H     UNIT         ?PR?MAIN?GSS2
+            CODE    0084H     0071H     UNIT         ?PR?_SMS?GSM
+            CODE    00F5H     005CH     UNIT         ?C?LIB_CODE
+            CODE    0151H     003BH     UNIT         ?PR?_LCD_STRING?GSS2
+            CODE    018CH     002EH     UNIT         ?CO?GSM
+            CODE    01BAH     002EH     UNIT         ?PR?_MSDELAY?GSS2
+            CODE    01E8H     001FH     UNIT         ?PR?_TX_STR?GSM
+            CODE    0207H     001FH     UNIT         ?PR?GSM_DELAY?GSM
+            CODE    0226H     001BH     UNIT         ?PR?LCD_INIT?GSS2
+            CODE    0241H     001AH     UNIT         ?CO?GSS2
+            CODE    025BH     0017H     UNIT         ?PR?MAIN?GSM
+            CODE    0272H     0012H     UNIT         ?PR?_LCD_CMD?GSS2
+            CODE    0284H     0012H     UNIT         ?PR?_LCD_DATA?GSS2
+            CODE    0296H     000FH     UNIT         ?PR?SER_INIT?GSM
+            CODE    02A5H     000EH     UNIT         ?PR?_TX?GSM
+            CODE    02B3H     000DH     UNIT         ?PR?GSM_READ?GSS2
+            CODE    02C0H     000CH     UNIT         ?PR?GSM_INIT?GSS2
+            CODE    02CCH     000CH     UNIT         ?C_C51STARTUP
+            CODE    02D8H     0008H     UNIT         ?PR?RX?GSM
+            CODE    02E0H     0008H     UNIT         ?PR?_GSM_WRITE?GSS2
+
+
+
+OVERLAY MAP OF MODULE:   .\Objects\gsm (GSM)
+
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  01/26/2022  13:57:24  PAGE 2
+
+
+SEGMENT                          DATA_GROUP 
+  +--> CALLED SEGMENT          START    LENGTH
+----------------------------------------------
+?C_C51STARTUP                  -----    -----
+  +--> ?PR?MAIN?GSM
+
+?PR?MAIN?GSM                   -----    -----
+  +--> ?PR?SER_INIT?GSM
+  +--> ?CO?GSM
+  +--> ?PR?_SMS?GSM
+
+?PR?_SMS?GSM                   0024H    0006H
+  +--> ?CO?GSM
+  +--> ?PR?_TX_STR?GSM
+  +--> ?PR?GSM_DELAY?GSM
+  +--> ?PR?_TX?GSM
+
+?PR?_TX_STR?GSM                002AH    0003H
+  +--> ?PR?_TX?GSM
+
+?PR?GSM_DELAY?GSM              -----    -----
+  +--> ?PR?_TX?GSM
+
+
+
+IGNORED SYMBOLS:
+   MAIN
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\gsm (GSM)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        GSM
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  B:0098H.0       PUBLIC        RI
+  B:0098H.1       PUBLIC        TI
+  D:0032H         PUBLIC        dell
+  C:025BH         PUBLIC        main
+  C:01E8H         PUBLIC        _tx_str
+  D:0099H         PUBLIC        SBUF
+  D:0098H         PUBLIC        SCON
+  D:0089H         PUBLIC        TMOD
+  C:020CH         PUBLIC        gsm_delay
+  D:008DH         PUBLIC        TH1
+  D:008BH         PUBLIC        TL1
+  C:0084H         PUBLIC        _sms
+  B:0088H.6       PUBLIC        TR1
+  C:0296H         PUBLIC        ser_init
+  C:02D8H         PUBLIC        rx
+  C:02ABH         PUBLIC        _tx
+  -------         PROC          MAIN
+  C:025BH         LINE#         16
+  C:025BH         LINE#         17
+  C:025BH         LINE#         18
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  01/26/2022  13:57:24  PAGE 3
+
+
+  C:025EH         LINE#         20
+  C:0270H         LINE#         21
+  -------         ENDPROC       MAIN
+  -------         PROC          SER_INIT
+  C:0296H         LINE#         25
+  C:0296H         LINE#         26
+  C:0296H         LINE#         27
+  C:0299H         LINE#         28
+  C:029CH         LINE#         29
+  C:029FH         LINE#         30
+  C:02A2H         LINE#         31
+  C:02A4H         LINE#         32
+  -------         ENDPROC       SER_INIT
+  -------         PROC          L?0029
+  -------         ENDPROC       L?0029
+  -------         PROC          _TX
+  D:0007H         SYMBOL        send
+  C:02ABH         LINE#         34
+  C:02ABH         LINE#         35
+  C:02ABH         LINE#         36
+  C:02ADH         LINE#         37
+  C:02B0H         LINE#         38
+  C:02B2H         LINE#         39
+  -------         ENDPROC       _TX
+  -------         PROC          _TX_STR
+  D:002AH         SYMBOL        s
+  C:01E8H         LINE#         41
+  C:01EEH         LINE#         42
+  C:01EEH         LINE#         43
+  C:01F9H         LINE#         44
+  C:0206H         LINE#         45
+  -------         ENDPROC       _TX_STR
+  -------         PROC          RX
+  C:02D8H         LINE#         47
+  C:02D8H         LINE#         48
+  C:02D8H         LINE#         49
+  C:02DBH         LINE#         50
+  C:02DDH         LINE#         51
+  C:02DFH         LINE#         52
+  -------         ENDPROC       RX
+  C:0207H         SYMBOL        L?0028
+  -------         PROC          L?0027
+  -------         ENDPROC       L?0027
+  C:0207H         SYMBOL        L?0028
+  -------         PROC          GSM_DELAY
+  -------         DO            
+  D:0082H         SYMBOL        gsm_del
+  -------         ENDDO         
+  C:020CH         LINE#         54
+  C:020CH         LINE#         55
+  C:020CH         LINE#         57
+  C:0225H         LINE#         58
+  -------         ENDPROC       GSM_DELAY
+  -------         PROC          _SMS
+  D:0024H         SYMBOL        num1
+  D:0027H         SYMBOL        msg
+  C:0084H         LINE#         60
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  01/26/2022  13:57:24  PAGE 4
+
+
+  C:008AH         LINE#         61
+  C:008AH         LINE#         62
+  C:0093H         LINE#         63
+  C:0093H         LINE#         64
+  C:0096H         LINE#         66
+  C:009FH         LINE#         67
+  C:009FH         LINE#         68
+  C:00A2H         LINE#         70
+  C:00ABH         LINE#         71
+  C:00AFH         LINE#         72
+  C:00BAH         LINE#         73
+  C:00CDH         LINE#         74
+  C:00D2H         LINE#         75
+  C:00D2H         LINE#         76
+  C:00D5H         LINE#         78
+  C:00E0H         LINE#         79
+  C:00EDH         LINE#         80
+  C:00F2H         LINE#         81
+  -------         ENDPROC       _SMS
+  -------         ENDMOD        GSM
+
+  -------         MODULE        GSS2
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  C:02C0H         PUBLIC        GSM_init
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  D:00B0H         PUBLIC        P3
+  D:00A8H         PUBLIC        IE
+  D:00B8H         PUBLIC        IP
+  B:0098H.0       PUBLIC        RI
+  B:0098H.1       PUBLIC        TI
+  C:0003H         PUBLIC        main
+  C:0151H         PUBLIC        _lcd_string
+  C:0284H         PUBLIC        _lcd_data
+  D:0099H         PUBLIC        SBUF
+  D:0098H         PUBLIC        SCON
+  D:0089H         PUBLIC        TMOD
+  D:0088H         PUBLIC        TCON
+  C:0272H         PUBLIC        _lcd_cmd
+  C:0226H         PUBLIC        lcd_init
+  D:008DH         PUBLIC        TH1
+  B:0088H.6       PUBLIC        TR1
+  D:0008H         PUBLIC        str
+  B:00B0H.4       PUBLIC        e
+  B:00B0H.2       PUBLIC        rs
+  C:02B3H         PUBLIC        GSM_read
+  D:00C8H         PUBLIC        T2CON
+  B:00B0H.3       PUBLIC        rw
+  D:0022H         PUBLIC        k
+  C:01C8H         PUBLIC        _msdelay
+  C:02E0H         PUBLIC        _GSM_write
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          GSM_INIT
+  C:02C0H         LINE#         9
+  C:02C0H         LINE#         10
+  C:02C0H         LINE#         11
+  C:02C3H         LINE#         12
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  01/26/2022  13:57:24  PAGE 5
+
+
+  C:02C6H         LINE#         13
+  C:02C9H         LINE#         14
+  C:02CBH         LINE#         15
+  -------         ENDPROC       GSM_INIT
+  C:01C1H         SYMBOL        L?0031
+  C:01C4H         SYMBOL        L?0032
+  -------         PROC          L?0030
+  -------         ENDPROC       L?0030
+  C:01C1H         SYMBOL        L?0031
+  C:01C4H         SYMBOL        L?0032
+  -------         PROC          _MSDELAY
+  D:0006H         SYMBOL        time
+  -------         DO            
+  D:0004H         SYMBOL        m
+  D:0002H         SYMBOL        n
+  -------         ENDDO         
+  C:01C8H         LINE#         16
+  C:01C8H         LINE#         17
+  C:01C8H         LINE#         19
+  C:01D2H         LINE#         20
+  C:01E7H         LINE#         21
+  -------         ENDPROC       _MSDELAY
+  -------         PROC          _LCD_CMD
+  D:0007H         SYMBOL        command
+  C:0272H         LINE#         22
+  C:0272H         LINE#         23
+  C:0272H         LINE#         24
+  C:0274H         LINE#         25
+  C:0276H         LINE#         26
+  C:0278H         LINE#         27
+  C:027AH         LINE#         28
+  C:0281H         LINE#         29
+  C:0283H         LINE#         30
+  -------         ENDPROC       _LCD_CMD
+  -------         PROC          _LCD_DATA
+  D:0007H         SYMBOL        disp_data
+  C:0284H         LINE#         32
+  C:0284H         LINE#         33
+  C:0284H         LINE#         34
+  C:0286H         LINE#         35
+  C:0288H         LINE#         36
+  C:028AH         LINE#         37
+  C:028CH         LINE#         38
+  C:0293H         LINE#         39
+  C:0295H         LINE#         40
+  -------         ENDPROC       _LCD_DATA
+  -------         PROC          LCD_INIT
+  C:0226H         LINE#         42
+  C:0226H         LINE#         43
+  C:0226H         LINE#         44
+  C:0228H         LINE#         45
+  C:022BH         LINE#         46
+  C:0230H         LINE#         47
+  C:0232H         LINE#         48
+  C:0232H         LINE#         49
+  C:0235H         LINE#         50
+  C:023AH         LINE#         51
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  01/26/2022  13:57:24  PAGE 6
+
+
+  -------         ENDPROC       LCD_INIT
+  -------         PROC          _LCD_STRING
+  D:002DH         SYMBOL        str
+  -------         DO            
+  D:0030H         SYMBOL        i
+  -------         ENDDO         
+  C:0151H         LINE#         53
+  C:0157H         LINE#         54
+  C:0157H         LINE#         55
+  C:015CH         LINE#         56
+  C:016EH         LINE#         57
+  C:016EH         LINE#         58
+  C:0171H         LINE#         59
+  C:0179H         LINE#         60
+  C:017CH         LINE#         61
+  C:0189H         LINE#         62
+  C:018BH         LINE#         64
+  -------         ENDPROC       _LCD_STRING
+  -------         PROC          _GSM_WRITE
+  D:0007H         SYMBOL        ch
+  C:02E0H         LINE#         66
+  C:02E0H         LINE#         67
+  C:02E0H         LINE#         68
+  C:02E2H         LINE#         69
+  C:02E5H         LINE#         70
+  C:02E7H         LINE#         71
+  -------         ENDPROC       _GSM_WRITE
+  -------         PROC          GSM_READ
+  C:02B3H         LINE#         73
+  C:02B3H         LINE#         74
+  C:02B3H         LINE#         75
+  C:02B6H         LINE#         76
+  C:02BDH         LINE#         77
+  C:02BFH         LINE#         78
+  -------         ENDPROC       GSM_READ
+  -------         PROC          MAIN
+  C:0003H         LINE#         80
+  C:0003H         LINE#         81
+  C:0003H         LINE#         82
+  C:0008H         LINE#         83
+  C:000BH         LINE#         84
+  C:000EH         LINE#         85
+  C:0015H         LINE#         86
+  C:001EH         LINE#         87
+  C:0020H         LINE#         88
+  C:0020H         LINE#         89
+  C:0023H         LINE#         90
+  C:0028H         LINE#         91
+  C:002BH         LINE#         92
+  C:0032H         LINE#         93
+  C:0037H         LINE#         94
+  C:003AH         LINE#         95
+  C:0041H         LINE#         96
+  C:0046H         LINE#         97
+  C:004BH         LINE#         98
+  C:004BH         LINE#         99
+  C:004BH         LINE#         100
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  01/26/2022  13:57:24  PAGE 7
+
+
+  C:004EH         LINE#         101
+  C:0061H         LINE#         102
+  C:0066H         LINE#         103
+  C:0070H         LINE#         104
+  C:007AH         LINE#         105
+  C:007AH         LINE#         106
+  C:007AH         LINE#         107
+  C:0082H         LINE#         108
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        GSS2
+
+  -------         MODULE        ?C?CLDPTR
+  C:00F5H         PUBLIC        ?C?CLDPTR
+  -------         ENDMOD        ?C?CLDPTR
+
+  -------         MODULE        ?C?CLDOPTR
+  C:010EH         PUBLIC        ?C?CLDOPTR
+  -------         ENDMOD        ?C?CLDOPTR
+
+  -------         MODULE        ?C?SLCMP
+  C:013BH         PUBLIC        ?C?SLCMP
+  -------         ENDMOD        ?C?SLCMP
+
+*** ERROR L104: MULTIPLE PUBLIC DEFINITIONS
+    SYMBOL:  MAIN
+    MODULE:  .\Objects\gss2.obj (GSS2)
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RX?GSM
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?MAIN?GSS2
+
+Program Size: data=53.0 xdata=0 code=744
+LINK/LOCATE RUN COMPLETE.  2 WARNING(S),  1 ERROR(S)

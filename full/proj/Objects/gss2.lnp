@@ -1,0 +1,3 @@
+".\Objects\rf.obj" 
+TO ".\Objects\gss2" 
+PRINT(".\Listings\gss2.m51")

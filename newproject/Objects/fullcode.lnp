@@ -1,0 +1,4 @@
+".\Objects\fullC.obj" 
+TO ".\Objects\fullcode" 
+
+PRINT(".\Listings\fullcode.map")

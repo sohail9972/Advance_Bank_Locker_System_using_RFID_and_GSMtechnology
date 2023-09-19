@@ -1,0 +1,284 @@
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    01/27/2022  18:43:15  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
+C:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\rf.obj TO .\Objects\gss2 PRINT (.\Listings\gss2.m51)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\rf.obj (RF)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C_STARTUP)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C?CLDPTR)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C?STRCMP)
+
+
+LINK MAP OF MODULE:  .\Objects\gss2 (RF)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0066H     UNIT         ?DT?RF
+            DATA    006EH     0003H     UNIT         ?DT?_SENDSER_STR?RF
+            DATA    0071H     0003H     UNIT         _DATA_GROUP_
+            IDATA   0074H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     01B4H     UNIT         ?C?LIB_CODE
+            CODE    01B7H     0114H     UNIT         ?PR?MAIN?RF
+            CODE    02CBH     00A9H     UNIT         ?CO?RF
+            CODE    0374H     002BH     UNIT         ?PR?_LCD_STR?RF
+            CODE    039FH     0025H     UNIT         ?PR?_SENDSER_STR?RF
+            CODE    03C4H     0016H     UNIT         ?PR?_DELAY?RF
+            CODE    03DAH     0014H     UNIT         ?PR?LCD_INIT?RF
+            CODE    03EEH     0012H     UNIT         ?PR?_LCD_CMD?RF
+            CODE    0400H     0012H     UNIT         ?PR?_LCD_DATA?RF
+            CODE    0412H     000CH     UNIT         ?PR?CLEAR?RF
+            CODE    041EH     000CH     UNIT         ?C_C51STARTUP
+            CODE    042AH     0008H     UNIT         ?PR?_SENDSER_CHAR?RF
+
+
+
+OVERLAY MAP OF MODULE:   .\Objects\gss2 (RF)
+
+
+SEGMENT                          DATA_GROUP 
+  +--> CALLED SEGMENT          START    LENGTH
+----------------------------------------------
+?C_C51STARTUP                  -----    -----
+  +--> ?PR?MAIN?RF
+
+?PR?MAIN?RF                    -----    -----
+  +--> ?PR?LCD_INIT?RF
+  +--> ?CO?RF
+  +--> ?PR?_LCD_STR?RF
+  +--> ?PR?_LCD_CMD?RF
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  01/27/2022  18:43:15  PAGE 2
+
+
+  +--> ?PR?_DELAY?RF
+  +--> ?PR?CLEAR?RF
+
+?PR?LCD_INIT?RF                -----    -----
+  +--> ?PR?_LCD_CMD?RF
+
+?PR?_LCD_CMD?RF                -----    -----
+  +--> ?PR?_DELAY?RF
+
+?PR?_LCD_STR?RF                0071H    0003H
+  +--> ?PR?_LCD_DATA?RF
+
+?PR?_LCD_DATA?RF               -----    -----
+  +--> ?PR?_DELAY?RF
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\gss2 (RF)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        RF
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:00A0H         PUBLIC        P2
+  D:0090H         PUBLIC        ldata
+  C:0412H         PUBLIC        clear
+  C:03C8H         PUBLIC        _delay
+  B:0098H.0       PUBLIC        RI
+  B:0098H.1       PUBLIC        TI
+  C:01B7H         PUBLIC        main
+  C:0400H         PUBLIC        _lcd_data
+  D:0099H         PUBLIC        SBUF
+  C:039FH         PUBLIC        _sendser_str
+  D:0098H         PUBLIC        SCON
+  D:0089H         PUBLIC        TMOD
+  C:03EEH         PUBLIC        _lcd_cmd
+  C:03DAH         PUBLIC        lcd_init
+  D:008DH         PUBLIC        TH1
+  B:00A0H.1       PUBLIC        en
+  B:0088H.6       PUBLIC        TR1
+  D:0008H         PUBLIC        a
+  B:00A0H.0       PUBLIC        rs
+  D:006CH         PUBLIC        i
+  C:037AH         PUBLIC        _lcd_str
+  C:042AH         PUBLIC        _sendser_char
+  -------         PROC          MAIN
+  C:01B7H         LINE#         18
+  C:01B7H         LINE#         20
+  C:01B7H         LINE#         22
+  C:01BAH         LINE#         23
+  C:01BDH         LINE#         24
+  C:01C0H         LINE#         25
+  C:01C2H         LINE#         26
+  C:01C5H         LINE#         27
+  C:01CEH         LINE#         28
+  C:01D3H         LINE#         29
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  01/27/2022  18:43:15  PAGE 3
+
+
+  C:01DCH         LINE#         31
+  C:01DFH         LINE#         32
+  C:01E4H         LINE#         33
+  C:01E9H         LINE#         34
+  C:01F2H         LINE#         35
+  C:01F7H         LINE#         36
+  C:0200H         LINE#         37
+  C:0203H         LINE#         38
+  C:0203H         LINE#         40
+  C:0203H         LINE#         41
+  C:0208H         LINE#         42
+  C:020DH         LINE#         43
+  C:0216H         LINE#         44
+  C:021BH         LINE#         45
+  C:0224H         LINE#         46
+  C:0229H         LINE#         47
+  C:0229H         LINE#         48
+  C:022CH         LINE#         49
+  C:022EH         LINE#         50
+  C:0235H         LINE#         53
+  C:0243H         LINE#         54
+  C:0246H         LINE#         55
+  C:025BH         LINE#         56
+  C:025BH         LINE#         57
+  C:0260H         LINE#         58
+  C:0265H         LINE#         59
+  C:026BH         LINE#         60
+  C:026BH         LINE#         61
+  C:026BH         LINE#         62
+  C:026BH         LINE#         63
+  C:026BH         LINE#         64
+  C:026DH         LINE#         65
+  C:0283H         LINE#         66
+  C:0283H         LINE#         67
+  C:0288H         LINE#         68
+  C:028DH         LINE#         69
+  C:0296H         LINE#         70
+  C:029BH         LINE#         71
+  C:029EH         LINE#         72
+  C:02A1H         LINE#         73
+  C:02A4H         LINE#         74
+  C:02A7H         LINE#         76
+  C:02A7H         LINE#         77
+  C:02ACH         LINE#         78
+  C:02B1H         LINE#         79
+  C:02BAH         LINE#         80
+  C:02BFH         LINE#         81
+  C:02C2H         LINE#         82
+  C:02C5H         LINE#         83
+  C:02C8H         LINE#         84
+  C:02C8H         LINE#         86
+  -------         ENDPROC       MAIN
+  -------         PROC          LCD_INIT
+  C:03DAH         LINE#         90
+  C:03DAH         LINE#         91
+  C:03DAH         LINE#         92
+  C:03DFH         LINE#         93
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  01/27/2022  18:43:15  PAGE 4
+
+
+  C:03E4H         LINE#         94
+  C:03E9H         LINE#         95
+  -------         ENDPROC       LCD_INIT
+  C:03C4H         SYMBOL        L?0040
+  -------         PROC          L?0039
+  -------         ENDPROC       L?0039
+  C:03C4H         SYMBOL        L?0040
+  -------         PROC          _DELAY
+  D:0006H         SYMBOL        i
+  -------         DO            
+  D:0004H         SYMBOL        j
+  -------         ENDDO         
+  C:03C8H         LINE#         99
+  C:03C8H         LINE#         100
+  C:03C8H         LINE#         102
+  C:03D9H         LINE#         103
+  -------         ENDPROC       _DELAY
+  -------         PROC          _LCD_CMD
+  D:0007H         SYMBOL        a
+  C:03EEH         LINE#         105
+  C:03EEH         LINE#         106
+  C:03EEH         LINE#         107
+  C:03F0H         LINE#         108
+  C:03F2H         LINE#         109
+  C:03F4H         LINE#         110
+  C:03FBH         LINE#         111
+  C:03FDH         LINE#         112
+  -------         ENDPROC       _LCD_CMD
+  -------         PROC          _LCD_DATA
+  D:0007H         SYMBOL        b
+  C:0400H         LINE#         114
+  C:0400H         LINE#         115
+  C:0400H         LINE#         116
+  C:0402H         LINE#         117
+  C:0404H         LINE#         118
+  C:0406H         LINE#         119
+  C:040DH         LINE#         120
+  C:040FH         LINE#         121
+  -------         ENDPROC       _LCD_DATA
+  -------         PROC          L?0041
+  -------         ENDPROC       L?0041
+  -------         PROC          _LCD_STR
+  D:0071H         SYMBOL        str
+  C:037AH         LINE#         123
+  C:0380H         LINE#         124
+  C:0380H         LINE#         125
+  C:038BH         LINE#         126
+  C:038BH         LINE#         127
+  C:039CH         LINE#         128
+  C:039EH         LINE#         130
+  -------         ENDPROC       _LCD_STR
+  -------         PROC          _SENDSER_CHAR
+  D:0007H         SYMBOL        b
+  C:042AH         LINE#         133
+  C:042AH         LINE#         134
+  C:042AH         LINE#         135
+  C:042CH         LINE#         136
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  01/27/2022  18:43:15  PAGE 5
+
+
+  C:042FH         LINE#         137
+  C:0431H         LINE#         138
+  -------         ENDPROC       _SENDSER_CHAR
+  -------         PROC          _SENDSER_STR
+  D:006EH         SYMBOL        str
+  C:039FH         LINE#         141
+  C:03A5H         LINE#         142
+  C:03A5H         LINE#         143
+  C:03B0H         LINE#         144
+  C:03B0H         LINE#         145
+  C:03C1H         LINE#         146
+  C:03C3H         LINE#         148
+  -------         ENDPROC       _SENDSER_STR
+  -------         PROC          CLEAR
+  -------         DO            
+  D:0006H         SYMBOL        i
+  -------         ENDDO         
+  C:0412H         LINE#         149
+  C:0412H         LINE#         150
+  C:0412H         LINE#         153
+  C:0414H         LINE#         154
+  C:0414H         LINE#         155
+  C:041DH         LINE#         157
+  C:041DH         LINE#         158
+  -------         ENDPROC       CLEAR
+  -------         ENDMOD        RF
+
+  -------         MODULE        ?C?CLDPTR
+  C:0003H         PUBLIC        ?C?CLDPTR
+  -------         ENDMOD        ?C?CLDPTR
+
+  -------         MODULE        ?C?STRCMP
+  C:019AH         PUBLIC        ?C?STRCMP
+  -------         ENDMOD        ?C?STRCMP
+
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_SENDSER_STR?RF
+
+Program Size: data=117.0 xdata=0 code=1074
+LINK/LOCATE RUN COMPLETE.  1 WARNING(S),  0 ERROR(S)

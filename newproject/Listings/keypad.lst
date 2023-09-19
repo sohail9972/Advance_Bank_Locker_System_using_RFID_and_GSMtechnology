@@ -1,0 +1,208 @@
+C51 COMPILER V9.60.0.0   KEYPAD                                                            05/06/2022 12:29:55 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE KEYPAD
+OBJECT MODULE PLACED IN .\Objects\keypad.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE keypad.c OMF2 OPTIMIZE(8,SPEED) BROWSE DEBUG PRINT(.\Listings\keypad.lst
+                    -) TABS(2) OBJECT(.\Objects\keypad.obj)
+
+line level    source
+
+   1          // Program to interface controller with controller
+   2          
+   3          #include<reg51.h>
+   4          #define port P1
+   5          #define dataport P2  // Dataport for lcd
+   6          #define key P0  // Port for keypad
+   7          #define sec 100
+   8          sbit rs = port^1;
+   9          sbit rw = port^2;
+  10          sbit en = port^3;
+  11          
+  12          sbit col1=key^4;
+  13          sbit col2=key^5;
+  14          sbit col3=key^6;
+  15          sbit row1=key^0;
+  16          sbit row2=key^1;
+  17          sbit row3=key^2;
+  18          sbit row4=key^3;
+  19          
+  20          void delay(unsigned int msec) //Time delay function
+  21          {
+  22   1      int i,j ;
+  23   1      for(i=0;i<msec;i++)
+  24   1        for(j=0;j<1275;j++);
+  25   1      }
+  26          void lcd_cmd(unsigned char item) //Function to send command to LCD
+  27          {
+  28   1      dataport = item;
+  29   1      rs= 0;
+  30   1      rw=0;
+  31   1      en=1;
+  32   1      delay(1);
+  33   1      en=0;
+  34   1      return;
+  35   1      }
+  36          void lcd_data(unsigned char item) //Funtion to send data on LCD
+  37          {
+  38   1      dataport = item;
+  39   1      rs= 1;
+  40   1      rw=0;
+  41   1      en=1;
+  42   1      delay(1);
+  43   1      en=0;
+  44   1      return;
+  45   1      }
+  46          void lcd_data_string(unsigned char *str) // Function to send string on LCD
+  47          {
+  48   1      int i=0;
+  49   1      while(str[i]!='\n')
+  50   1      {
+  51   2        lcd_data(str[i]);
+  52   2        i++;
+  53   2        delay(10);
+  54   2      }
+C51 COMPILER V9.60.0.0   KEYPAD                                                            05/06/2022 12:29:55 PAGE 2   
+
+  55   1      return;
+  56   1      }
+  57          void lcd(unsigned char str[10])  // Funtion to Initialize LCD
+  58          {
+  59   1      lcd_cmd(0x38);
+  60   1      lcd_cmd(0x0e);
+  61   1      //delay(sec);
+  62   1      lcd_cmd(0x01);
+  63   1      //delay(sec);
+  64   1      lcd_cmd(0x82);
+  65   1      //delay(sec);
+  66   1      lcd_data_string(str);
+  67   1      }
+  68          void display(int a) //Display functon for LCD
+  69          
+  70          {
+  71   1      switch(a)
+  72   1      {
+  73   2        case 1:lcd("one 1");
+  74   2          break;
+  75   2        case 2:lcd("two 2");
+  76   2          break;
+  77   2        case 3:lcd("three 3");
+  78   2          break;
+  79   2        case 4:lcd("four 4");
+  80   2          break;
+  81   2        case 5:lcd("five 5");
+  82   2          break;
+  83   2        case 6:lcd("six 6");
+  84   2          break;
+  85   2        case 7:lcd("seven 7");
+  86   2          break;
+  87   2        case 8:lcd("EIGHT 8");
+  88   2          break;
+  89   2        case 9:lcd("NINE 9");
+  90   2          break;
+  91   2        case 0:lcd("ZERO 0");
+  92   2          break;
+  93   2        case 11:lcd("*");
+  94   2          break;
+  95   2        case 12:lcd("#");
+  96   2          break;
+  97   2      }
+  98   1      }
+  99          void check_col1() //Function for checking column one
+ 100          {
+ 101   1      row1=row2=row3=row4=1;
+ 102   1      row1=0;
+ 103   1      if(col1==0)
+ 104   1      display(1);
+ 105   1      row1=1;
+ 106   1      row2=0;
+ 107   1      if(col1==0)
+ 108   1      display(4);
+ 109   1      row2=1;
+ 110   1      row3=0;
+ 111   1      if(col1==0)
+ 112   1      display(7);
+ 113   1      row3=1;
+ 114   1      row4=0;
+ 115   1      if(col1==0)
+ 116   1      display(11); 
+C51 COMPILER V9.60.0.0   KEYPAD                                                            05/06/2022 12:29:55 PAGE 3   
+
+ 117   1      row4=1;
+ 118   1      }
+ 119          void check_col2() //Function for checking column two
+ 120          {
+ 121   1      row1=row2=row3=row4=1;
+ 122   1      row1=0;
+ 123   1      if(col2==0)
+ 124   1      display(2);
+ 125   1      row1=1;
+ 126   1      row2=0;
+ 127   1      if(col2==0)
+ 128   1      display(5);
+ 129   1      row2=1;
+ 130   1      row3=0;
+ 131   1      if(col2==0)
+ 132   1      display(8);
+ 133   1      row3=1;
+ 134   1      row4=0;
+ 135   1      if(col2==0)
+ 136   1      display(0);
+ 137   1      row4=1;
+ 138   1      }
+ 139          void check_col3() //Function for checking column three
+ 140          {
+ 141   1      row1=row2=row3=row4=1;
+ 142   1      row1=0;
+ 143   1      if(col3==0)
+ 144   1      display(3);
+ 145   1      row1=1;
+ 146   1      row2=0;
+ 147   1      if(col3==0)
+ 148   1      display(6);
+ 149   1      row2=1;
+ 150   1      row3=0;
+ 151   1      if(col3==0)
+ 152   1      display(9);
+ 153   1      row3=1;
+ 154   1      row4=0;
+ 155   1      if(col3==0)
+ 156   1      display(12);  //For #
+ 157   1      row4=1;
+ 158   1      }
+ 159          void main()
+ 160          {
+ 161   1      col1=col2=col3=1;  //Input Port
+ 162   1      while(1)
+ 163   1      {
+ 164   2        row1=row2=row3=row4=0;
+ 165   2        if(col1==0)
+ 166   2        check_col1();
+ 167   2        else
+ 168   2         if(col2==0)
+ 169   2         check_col2();
+ 170   2         else
+ 171   2          if(col3==0)
+ 172   2          check_col3();
+ 173   2      }
+ 174   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    538    ----
+C51 COMPILER V9.60.0.0   KEYPAD                                                            05/06/2022 12:29:55 PAGE 4   
+
+   CONSTANT SIZE    =     74    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       8
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+   EDATA SIZE       =   ----    ----
+   HDATA SIZE       =   ----    ----
+   XDATA CONST SIZE =   ----    ----
+   FAR CONST SIZE   =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

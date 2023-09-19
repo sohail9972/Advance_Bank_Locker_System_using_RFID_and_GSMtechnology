@@ -1,0 +1,4 @@
+".\Objects\gsm.obj",
+".\Objects\gss2.obj" 
+TO ".\Objects\gsm" 
+PRINT(".\Listings\gsm.m51")
